@@ -27,3 +27,7 @@
 # [Получение данных по API](https://github.com/AntonBoy35/my_python/blob/main/getting_data_via_API.py)
 
 Программа обращается к Яндекс геокодеру, получает информацию об объектах РФ, преобразовывает данные в json формат и выводит данные о долготе г. Самара.
+
+# [Получение котировок акций со страницы сайта](https://github.com/AntonBoy35/my_python/blob/main/getting_quotes.py)
+
+Программа получает данные о котировках акций со страницы mfd.ru/marketdata/?id=5&group=16&mode=3&sortHeader=name&sortOrder=1&selectedDate=01.11.2019 и находит, по какому тикеру был максимальный рост числа сделок (в процентах) за 1 ноября 2019 года.
