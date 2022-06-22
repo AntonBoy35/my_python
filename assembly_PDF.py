@@ -1,14 +1,3 @@
-# Задание: сборка PDF документа
-
-'''
-Используя данные по посещаемости библиотек в районах Москвы
-https://video.ittensive.com/python-advanced/data-7361-2019-11-28.utf.json
-постройте круговую диаграмму суммарной посещаемости (NumOfVisitors) 20 наиболее популярных районов Москвы.
-Создайте PDF отчет, используя файл
-https://video.ittensive.com/python-advanced/title.pdf
-как первую страницу. На второй странице выведите итоговую диаграмму, самый популярный район Москвы и число посетителей библиотек в нем.
-'''
-
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from reportlab.pdfgen import canvas
 from reportlab.lib import pagesizes
