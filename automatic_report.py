@@ -1,16 +1,3 @@
-# Задание: автоматические отчеты
-"""
-Соберите отчет по результатам ЕГЭ в 2018-2019 году, используя данные
-https://video.ittensive.com/python-advanced/data-9722-2019-10-14.utf.csv
-и отправьте его в HTML формате по адресу support@ittensive.com, используя только Python.
-В отчете должно быть:
-    общее число отличников (учеников, получивших более 220 баллов по ЕГЭ в Москве),
-    распределение отличников по округам Москвы,
-    название школы с лучшими результатами по ЕГЭ в Москве.
-Диаграмма распределения должна быть вставлена в HTML через data:URI формат (в base64-кодировке).
-Дополнительно: приложите к отчету PDF документ того же содержания (дублирующий письмо).
-"""
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import pdfkit
@@ -77,7 +64,7 @@ pdfkit.from_string(html, 'ege.best.pdf',
 
 letter = MIMEMultipart() # создание MIME объекта
 
-# добавуление информации в MIME объект
+# добавление информации в MIME объект
 letter["From"] = "=?utf-8?b?0JDQvdGC0L7QvSDQkdC+0LnQutC+?= <aboiko35@yandex.ru>"
 letter["Subject"] = "Результаты по ЕГЭ в Москве"
 letter["Content-Type"] = "text/html; charset=utf-8"
