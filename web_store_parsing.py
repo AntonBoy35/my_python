@@ -1,21 +1,17 @@
-# Парсинг интернет магазина
-
-'''Используя парсинг данных с маркетплейса beru.ru, найдите, на сколько литров отличается общий объем холодильников Саратов 263 и Саратов 452?
-
-Для парсинга можно использовать зеркало страницы beru.ru с результатами для холодильников Саратов по адресу:
-
-video.ittensive.com/data/018-python-advanced/beru.ru/'''
-
-# использовал данные с сайта Ситилинк, т.к. остальные сайты заблокировали бот
 import requests
 from bs4 import BeautifulSoup
-# получаем ссылки на страницы со всеми холодильниками Саратов
-header = {'User-Agent': 'ittensive-python-scraper/1.0 (+https://ittensive.com)'} # информация для разработчиков объекта парсинга
+
+# информация для разработчиков объекта парсинга
+header = {'User-Agent': 'ittensive-python-scraper/1.0 (+https://ittensive.com)'} 
+# ссылка на страницу с холодильниками Саратов
 url = 'https://www.citilink.ru/catalog/holodilniki/SARATOV/'
+# гет запрос
 r = requests.get(url, headers=header)
+# преобразование response объекта в контент
 html = BeautifulSoup(r.content, features="lxml")
+# выборка ссылок по тегу <а> включающему информацию о холодильниках
 links = html.find_all("a", {'class': 'ProductCardVertical__name Link js--Link Link_type_default'})
-# из всех ссылок выбираем только те, которые есть в условии задачи
+# выборка ссылок по холодильникам Саратов требуемых моделей
 link_263 = []
 link_452 = []
 for link in links:
@@ -31,7 +27,7 @@ def find_volume(link):
     volume = volume[1].get_text()
     volume = volume.split(";")
     return int(''.join(i for i in volume[0] if i.isdigit()))
-# проверяем наличие ссылок в списках, если они есть, применяем созданную функцию и получаем объемы
+# проверка наличия ссылок в списках, если они есть, применяется созданнуя функция и получаем объемы
 if link_263 and link_452:
     volume_263 = find_volume(link_263)
     volume_452 = find_volume(link_452)
