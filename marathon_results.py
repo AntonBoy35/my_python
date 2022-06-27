@@ -1,10 +1,9 @@
-# Результаты марафона
-
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import scipy.stats as stats
-# функция перевода времени из списка в секунды
+
+# функция перевода времени в секунды
 def to_sec (time):
     count = 0
     sum_time = 0
@@ -26,8 +25,9 @@ def to_sec (time):
             sec = i
     sum_time = hour + min + sec
     return sum_time
-
+# холст для графиков
 sns.set_context("paper", font_scale=1)
+# получение данных из удаленного csv файла 
 data = pd.read_csv("http://video.ittensive.com/python-advanced/marathon-data.csv", delimiter=",")
 # Сброс ограничений на количество выводимых рядов
 pd.set_option('display.max_rows', None)
@@ -35,6 +35,7 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 # Сброс ограничений на количество символов в записи
 pd.set_option('display.max_colwidth', None)
+# перевод данных с результатами забега в секунды
 data["split"] = data["split"].apply(lambda x: to_sec(x.split(":")))
 data["final"] = data["final"].apply(lambda x: to_sec(x.split(":")))
 
