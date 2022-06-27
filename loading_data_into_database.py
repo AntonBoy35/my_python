@@ -1,13 +1,3 @@
-# загрузка результатов в БД
-
-'''
-Соберите данные о моделях холодильников Саратов с маркетплейса beru.ru: URL, название, цена, размеры, общий объем, объем холодильной камеры.
-Создайте соответствующие таблицы в SQLite базе данных и загрузите полученные данные в таблицу beru_goods.
-Для парсинга можно использовать зеркало страницы beru.ru с результатами для холодильников Саратов по адресу:
-video.ittensive.com/data/018-python-advanced/beru.ru/
-'''
-# использовал сайт ситилинк, т.к. зеркало беру не работает, а сам сайт блокитует роботов
-
 import pandas as pd
 import sqlite3
 import requests
@@ -20,10 +10,15 @@ def find_number (s):
     return int("0" + "".join(i for i in s if i.isdigit()))
 # функция выбирающая нужные данные со страниц с холодильниками
 def find_data (link):
+    # загрузка данных с сайта по странично
     r = requests.get("https://www.citilink.ru" + link, headers=header)
+    # преобразование response объекта в контент
     html = BeautifulSoup(r.content, features="lxml")
+    # выборка данных с названием холодильника
     title = html.find("h1", {"class": "Heading Heading_level_1 ProductHeader__title"}).get_text().split("                    ")[1].split("\n")[0]
+    # выборка данных с ценой холодильника
     price = find_number(html.find("span", {"class": "ProductHeader__price-default_current-price js--ProductHeader__price-default_current-price"}).get_text())
+    # выборка данных заключенных в теги внутри блока класса "Specifications__row"
     tags = html.find_all("div", {"class": "Specifications__row"})
     width = 0
     depth = 0
@@ -31,6 +26,7 @@ def find_data (link):
     volume_all = 0
     volume_ref = 0
     volume_freez = 0
+    # выборка данных из выбранного контента с объемом и размерами холодильников
     for tag in tags:
         if tag.get_text().find("Объем:") > -1:
             volume_all = find_number(tag.find("div", {"class": "Specifications__column Specifications__column_value"}).get_text().split(";")[0])
@@ -46,7 +42,7 @@ def find_data (link):
 r = requests.get("https://www.citilink.ru/catalog/holodilniki/SARATOV/", headers=header)
 html = BeautifulSoup(r.content, features="lxml")
 links = html.find_all("a", {"class": "ProductCardVertical__name Link js--Link Link_type_default"})
-# выбираем все необходимые данные со страниц каждого холодильника
+# выбираем все необходимые данные со страниц с холодильниками
 data = []
 for link in links:
     if link["href"] and link.get_text().find("Саратов") > -1:
@@ -72,7 +68,7 @@ conn.commit() # выполняем
 db.executemany("""INSERT INTO citilink_goods (url, title, price, volume_all, volume_ref, volume_freez, width, depth, heigh) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""", data)
 conn.commit() # выполняем'''
-
+# проверка правильной загрузки данных в БД
 # выбираем данные во фрейм пандас из таблицы citilink_good БД data
 data = pd.read_sql_query("""SELECT * FROM citilink_goods""", conn)
 # Сброс ограничений на количество выводимых рядов
