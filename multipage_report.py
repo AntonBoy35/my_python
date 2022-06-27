@@ -1,13 +1,3 @@
-# Задание: многостраничный отчет
-
-'''
-Используя данные по активностям в парках Москвы
-https://video.ittensive.com/python-advanced/data-107235-2019-12-02.utf.json
-Создайте PDF отчет, в котором выведите:
-1. Диаграмму распределения числа активностей по паркам, топ10 самых активных
-2. Таблицу активностей по всем паркам в виде Активность-Расписание-Парк
-'''
-
 import requests
 import json
 import pandas as pd
@@ -15,6 +5,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import binascii
 import pdfkit
+
 # гет запрос по ссылке
 r = requests.get("https://video.ittensive.com/python-advanced/data-107235-2019-12-02.utf.json")
 # выборка нужных столбцов json файла из response объекта
@@ -27,10 +18,11 @@ data.columns = ["Активность", "Расписание", "Парк"]
 
 # создание группированного и отсортированного датафрейма
 parks = data.groupby("Парк").count().sort_values("Активность", ascending=False)
-# отрисовка круговой диаграммы по активности в парках Москвы
+# отрисовка круговой диаграммы по активности в 10 самых активных парках Москвы
 fig = plt.figure(figsize=(12, 6))
 area = fig.add_subplot(1, 1, 1)
 parks.head(10)["Активность"].plot.pie(ax=area, label="")
+
 # сохранение диаграммы и перевод картинки в кодированный вид
 img = BytesIO()
 plt.savefig(img)
